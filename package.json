@@ -1,5 +1,5 @@
 {
-  "name": "@visualai/mcp-server",
+  "name": "@alucardeht/frame-forge-mcp",
   "version": "0.1.0",
   "description": "Local image generation MCP server using MLX on Apple Silicon",
   "main": "dist/index.js",
