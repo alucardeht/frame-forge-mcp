@@ -1,0 +1,42 @@
+{
+  "name": "@visualai/mcp-server",
+  "version": "0.1.0",
+  "description": "Local image generation MCP server using MLX on Apple Silicon",
+  "main": "dist/index.js",
+  "type": "module",
+  "scripts": {
+    "build": "tsc",
+    "dev": "tsc --watch",
+    "start": "node dist/index.js",
+    "test": "node --experimental-vm-modules node_modules/jest/bin/jest.js",
+    "test:acceptance": "node --experimental-vm-modules node_modules/jest/bin/jest.js tests/acceptance"
+  },
+  "keywords": [
+    "mcp",
+    "image-generation",
+    "mlx",
+    "apple-silicon",
+    "stable-diffusion"
+  ],
+  "author": "",
+  "license": "MIT",
+  "engines": {
+    "node": ">=18.0.0"
+  },
+  "dependencies": {
+    "@modelcontextprotocol/sdk": "^1.24.3",
+    "dotenv": "^17.2.3",
+    "ora": "^9.0.0",
+    "potrace": "^2.1.8",
+    "prompts": "^2.4.2"
+  },
+  "devDependencies": {
+    "@jest/globals": "^29.7.0",
+    "@types/jest": "^29.5.0",
+    "@types/node": "^25.0.0",
+    "@types/prompts": "^2.4.9",
+    "jest": "^29.7.0",
+    "ts-jest": "^29.1.0",
+    "typescript": "^5.9.3"
+  }
+}
