@@ -1,0 +1,96 @@
+# Dependencies
+node_modules/
+package-lock.json
+
+# Build output
+dist/
+*.tsbuildinfo
+
+# Environment
+.env
+.env.local
+.env.*.local
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Logs
+logs/
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Testing
+coverage/
+.nyc_output/
+
+# Temporary files
+tmp/
+temp/
+*.tmp
+
+# Session data (local user data)
+.visualai/
+
+# Python cache (MLX subprocess)
+__pycache__/
+*.py[cod]
+*$py.class
+.Python
+
+# Model cache (will be in ~/.cache/huggingface)
+models/
+*.safetensors
+*.bin
+
+# Claude Code specific
+.claude/
+.specify/
+.serena/
+CLAUDE-GLOBAL.md
+CLAUDE-PROJECT.md
+
+# ============================================
+# Development artifacts (não publicáveis)
+# ============================================
+
+# Demo/test artifacts
+demo-*/
+scenario-test-outputs/
+*-outputs/
+
+# Development scripts
+demo-*.ts
+generate-*.ts
+health-check.ts
+test-all-scenarios.ts
+
+# Development documentation
+BANNER_LAYOUT_REFERENCE.md
+ERROR_HANDLING_VISUAL_GUIDE.md
+FILE_LOCATIONS.md
+MCP_ERROR_HANDLING_ANALYSIS.md
+RESEARCH_INDEX.md
+RESEARCH_SUMMARY.md
+SESSION-SUMMARY.md
+STRUCTURE.md
+CONTEXT.md
+TROUBLESHOOTING.md
+
+# CLAUDE documentation
+CLAUDE.md
+
+# CI/CD setup (incomplete)
+.github/
+
+# Development workspace
+workspace/
