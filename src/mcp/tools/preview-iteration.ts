@@ -1,4 +1,5 @@
-import type { MCPTool, MCPToolResult } from '../../types/index.js';
+import type { MCPTool } from '../../types/index.js';
+import type { CallToolResult } from '@modelcontextprotocol/sdk/types.js';
 import { SessionManager } from '../../session/session-manager.js';
 import { Logger } from '../../utils/logger.js';
 
@@ -26,7 +27,7 @@ export const previewIterationTool: MCPTool = {
 export async function handlePreviewIteration(
   args: Record<string, unknown>,
   sessionManager: SessionManager
-): Promise<MCPToolResult> {
+): Promise<CallToolResult> {
   try {
     const sessionId = args.sessionId as string;
     const iterationIndex = args.iterationIndex as number;

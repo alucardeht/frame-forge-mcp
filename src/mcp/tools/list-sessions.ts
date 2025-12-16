@@ -1,4 +1,5 @@
-import type { MCPTool, MCPToolResult } from '../../types/index.js';
+import type { MCPTool } from '../../types/index.js';
+import type { CallToolResult } from '@modelcontextprotocol/sdk/types.js';
 import { SessionManager } from '../../session/session-manager.js';
 import { Logger } from '../../utils/logger.js';
 
@@ -14,7 +15,7 @@ export const listSessionsTool: MCPTool = {
   },
 };
 
-export async function handleListSessions(sessionManager: SessionManager): Promise<MCPToolResult> {
+export async function handleListSessions(sessionManager: SessionManager): Promise<CallToolResult> {
   try {
     logger.info('Listing all sessions');
     const sessions = await sessionManager.listSessions();

@@ -1,4 +1,5 @@
-import type { MCPTool, MCPToolResult } from '../../types/index.js';
+import type { CallToolResult } from '@modelcontextprotocol/sdk/types.js';
+import type { MCPTool } from '../../types/index.js';
 import { MLXEngine } from '../../engines/mlx-engine.js';
 import { Logger } from '../../utils/logger.js';
 
@@ -14,7 +15,7 @@ export const checkEngineStatusTool: MCPTool = {
   },
 };
 
-export async function handleCheckEngineStatus(engine: MLXEngine): Promise<MCPToolResult> {
+export async function handleCheckEngineStatus(engine: MLXEngine): Promise<CallToolResult> {
   try {
     logger.info('Checking engine status');
     const status = await engine.checkStatus();

@@ -1,4 +1,5 @@
-import type { MCPTool, MCPToolResult } from '../../types/index.js';
+import type { CallToolResult } from '@modelcontextprotocol/sdk/types.js';
+import type { MCPTool } from '../../types/index.js';
 import { generateImageTool, handleGenerateImage } from './generate-image.js';
 import { checkEngineStatusTool, handleCheckEngineStatus } from './check-engine-status.js';
 import { listSessionsTool, handleListSessions } from './list-sessions.js';
@@ -55,161 +56,161 @@ export type ToolHandler = (
   args: Record<string, unknown>,
   engine: MLXEngine,
   sessionManager: SessionManager
-) => Promise<MCPToolResult>;
+) => Promise<CallToolResult>;
 
 export const TOOL_HANDLERS: Record<string, ToolHandler> = {
   'generate-image': handleGenerateImage as ToolHandler,
   'check-engine-status': async (
     _args: Record<string, unknown>,
     engine: MLXEngine
-  ): Promise<MCPToolResult> => {
+  ): Promise<CallToolResult> => {
     return handleCheckEngineStatus(engine);
   },
   'list-sessions': async (
     _args: Record<string, unknown>,
     _engine: MLXEngine,
     sessionManager: SessionManager
-  ): Promise<MCPToolResult> => {
+  ): Promise<CallToolResult> => {
     return handleListSessions(sessionManager);
   },
   'rollback-iteration': async (
     args: Record<string, unknown>,
     _engine: MLXEngine,
     sessionManager: SessionManager
-  ): Promise<MCPToolResult> => {
+  ): Promise<CallToolResult> => {
     return handleRollbackIteration(args, sessionManager);
   },
   'preview-iteration': async (
     args: Record<string, unknown>,
     _engine: MLXEngine,
     sessionManager: SessionManager
-  ): Promise<MCPToolResult> => {
+  ): Promise<CallToolResult> => {
     return handlePreviewIteration(args, sessionManager);
   },
   'list-available-models': async (
     _args: Record<string, unknown>,
     _engine: MLXEngine,
     _sessionManager: SessionManager
-  ): Promise<MCPToolResult> => {
+  ): Promise<CallToolResult> => {
     return handleListAvailableModels();
   },
   'list-iterations': async (
     args: Record<string, unknown>,
     _engine: MLXEngine,
     sessionManager: SessionManager
-  ): Promise<MCPToolResult> => {
+  ): Promise<CallToolResult> => {
     return handleListIterations(args, sessionManager);
   },
   'compare-iterations': async (
     args: Record<string, unknown>,
     _engine: MLXEngine,
     sessionManager: SessionManager
-  ): Promise<MCPToolResult> => {
+  ): Promise<CallToolResult> => {
     return handleCompareIterations(args, sessionManager);
   },
   'resolve-iteration-reference': async (
     args: Record<string, unknown>,
     _engine: MLXEngine,
     sessionManager: SessionManager
-  ): Promise<MCPToolResult> => {
+  ): Promise<CallToolResult> => {
     return handleResolveIterationReference(args, sessionManager);
   },
   'export-image': async (
     args: Record<string, unknown>,
     _engine: MLXEngine,
     sessionManager: SessionManager
-  ): Promise<MCPToolResult> => {
+  ): Promise<CallToolResult> => {
     return handleExportImage(args, sessionManager);
   },
   'undo': async (
     args: Record<string, unknown>,
     _engine: MLXEngine,
     sessionManager: SessionManager
-  ): Promise<MCPToolResult> => {
+  ): Promise<CallToolResult> => {
     return handleUndo(args, sessionManager);
   },
   'redo': async (
     args: Record<string, unknown>,
     _engine: MLXEngine,
     sessionManager: SessionManager
-  ): Promise<MCPToolResult> => {
+  ): Promise<CallToolResult> => {
     return handleRedo(args, sessionManager);
   },
   'generate-variants': async (
     args: Record<string, unknown>,
     engine: MLXEngine,
     sessionManager: SessionManager
-  ): Promise<MCPToolResult> => {
+  ): Promise<CallToolResult> => {
     return handleGenerateVariants(args, engine, sessionManager);
   },
   'select-variant': async (
     args: Record<string, unknown>,
     _engine: MLXEngine,
     sessionManager: SessionManager
-  ): Promise<MCPToolResult> => {
+  ): Promise<CallToolResult> => {
     return handleSelectVariant(args, sessionManager);
   },
   'refine-asset': async (
     args: Record<string, unknown>,
     engine: MLXEngine,
     sessionManager: SessionManager
-  ): Promise<MCPToolResult> => {
+  ): Promise<CallToolResult> => {
     return handleRefineAsset(args, engine, sessionManager);
   },
   'generate-banner': async (
     args: Record<string, unknown>,
     engine: MLXEngine,
     sessionManager: SessionManager
-  ): Promise<MCPToolResult> => {
+  ): Promise<CallToolResult> => {
     return handleGenerateBanner(args, engine, sessionManager);
   },
   'export-asset': async (
     args: Record<string, unknown>,
     _engine: MLXEngine,
     sessionManager: SessionManager
-  ): Promise<MCPToolResult> => {
+  ): Promise<CallToolResult> => {
     return handleExportAsset(args, sessionManager);
   },
   'generate-wireframe': async (
     args: Record<string, unknown>,
     _engine: MLXEngine,
     sessionManager: SessionManager
-  ): Promise<MCPToolResult> => {
+  ): Promise<CallToolResult> => {
     return handleGenerateWireframe(args, sessionManager);
   },
   'update-component': async (
     args: Record<string, unknown>,
     _engine: MLXEngine,
     sessionManager: SessionManager
-  ): Promise<MCPToolResult> => {
+  ): Promise<CallToolResult> => {
     return handleUpdateComponent(args, sessionManager);
   },
   'refine-component': async (
     args: Record<string, unknown>,
     _engine: MLXEngine,
     sessionManager: SessionManager
-  ): Promise<MCPToolResult> => {
+  ): Promise<CallToolResult> => {
     return handleRefineComponent(args, sessionManager);
   },
   'adjust-proportions': async (
     args: Record<string, unknown>,
     _engine: MLXEngine,
     sessionManager: SessionManager
-  ): Promise<MCPToolResult> => {
+  ): Promise<CallToolResult> => {
     return handleAdjustProportions(args, sessionManager);
   },
   'show-component': async (
     args: Record<string, unknown>,
     _engine: MLXEngine,
     sessionManager: SessionManager
-  ): Promise<MCPToolResult> => {
+  ): Promise<CallToolResult> => {
     return handleShowComponent(args, sessionManager);
   },
   'undo-wireframe': async (
     args: Record<string, unknown>,
     _engine: MLXEngine,
     sessionManager: SessionManager
-  ): Promise<MCPToolResult> => {
+  ): Promise<CallToolResult> => {
     return handleUndoWireframe(args, sessionManager);
   },
 };

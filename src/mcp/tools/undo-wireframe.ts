@@ -1,5 +1,6 @@
 import { SessionManager } from '../../session/session-manager.js';
 import type { Wireframe } from '../../types/index.js';
+import type { CallToolResult } from '@modelcontextprotocol/sdk/types.js';
 import { Logger } from '../../utils/logger.js';
 
 const logger = new Logger('UndoWireframeTool');
@@ -71,7 +72,7 @@ export async function pushHistory(
 export async function handleUndoWireframe(
   args: { sessionId?: string; wireframeId?: string; action?: string },
   sessionManager: SessionManager
-): Promise<{ content: Array<{ type: 'text'; text: string }> }> {
+): Promise<CallToolResult> {
   const sessionId = args.sessionId as string;
   const action = (args.action as string) ?? 'undo';
 

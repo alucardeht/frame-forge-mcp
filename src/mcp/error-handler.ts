@@ -1,3 +1,5 @@
+import type { CallToolResult } from '@modelcontextprotocol/sdk/types.js';
+
 export enum ErrorCategory {
   SETUP = 'setup',
   RUNTIME = 'runtime',
@@ -205,7 +207,7 @@ export class ErrorHandler {
     return formatted;
   }
 
-  static formatForMCP(structuredError: StructuredError): { content: Array<{ type: 'text'; text: string }> } {
+  static formatForMCP(structuredError: StructuredError): CallToolResult {
     let text = `⚠️ ${structuredError.userMessage}`;
 
     if (structuredError.suggestedAction) {
@@ -220,6 +222,8 @@ export class ErrorHandler {
 
     return {
       content: [{ type: 'text' as const, text }],
+      isError: structuredError.severity === ErrorSeverity.FATAL ||
+               structuredError.severity === ErrorSeverity.ERROR,
     };
   }
 

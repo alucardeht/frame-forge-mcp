@@ -1,4 +1,5 @@
-import type { MCPTool, MCPToolResult } from '../../types/index.js';
+import type { MCPTool } from '../../types/index.js';
+import type { CallToolResult } from '@modelcontextprotocol/sdk/types.js';
 import { Logger } from '../../utils/logger.js';
 
 const logger = new Logger('list-available-models');
@@ -22,7 +23,7 @@ interface ModelInfo {
   huggingfaceId: string;
 }
 
-export async function handleListAvailableModels(): Promise<MCPToolResult> {
+export async function handleListAvailableModels(): Promise<CallToolResult> {
   logger.info('Listing available models');
 
   try {

@@ -1,4 +1,6 @@
-import type { MCPTool, MCPToolResult, AssetMetadata } from '../../types/index.js';
+import type { AssetMetadata } from '../../types/index.js';
+import type { CallToolResult } from '@modelcontextprotocol/sdk/types.js';
+import type { MCPTool } from '../../types/index.js';
 import { SessionManager } from '../../session/session-manager.js';
 import { Logger } from '../../utils/logger.js';
 import { validateAssetDimensions } from '../../lib/validators.js';
@@ -79,7 +81,7 @@ function buildExportMetadata(
 export async function handleExportAsset(
   args: Record<string, unknown>,
   sessionManager: SessionManager
-): Promise<MCPToolResult> {
+): Promise<CallToolResult> {
   const operationStart = Date.now();
   const startTime = Date.now();
 

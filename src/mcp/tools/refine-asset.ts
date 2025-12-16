@@ -1,4 +1,5 @@
-import type { MCPTool, MCPToolResult, Variant } from '../../types/index.js';
+import type { MCPTool, Variant } from '../../types/index.js';
+import type { CallToolResult } from '@modelcontextprotocol/sdk/types.js';
 import type { BaseEngine } from '../../engines/base-engine.js';
 import { SessionManager } from '../../session/session-manager.js';
 import { Logger } from '../../utils/logger.js';
@@ -40,7 +41,7 @@ export async function handleRefineAsset(
   args: Record<string, unknown>,
   engine: BaseEngine,
   sessionManager: SessionManager
-): Promise<MCPToolResult> {
+): Promise<CallToolResult> {
   const operationStart = Date.now();
   const startTime = Date.now();
 

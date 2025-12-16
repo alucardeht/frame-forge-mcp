@@ -1,4 +1,5 @@
-import { MCPToolResult, WireframeComponent } from '../../types/index.js';
+import type { CallToolResult } from '@modelcontextprotocol/sdk/types.js';
+import { WireframeComponent } from '../../types/index.js';
 import { SessionManager } from '../../session/session-manager.js';
 import { Logger } from '../../utils/logger.js';
 import { pushHistory } from './undo-wireframe.js';
@@ -158,7 +159,7 @@ function recomputeAdjacentPositions(
 export async function handleAdjustProportions(
   args: Record<string, unknown>,
   sessionManager: SessionManager
-): Promise<MCPToolResult> {
+): Promise<CallToolResult> {
   const sessionId = args.sessionId as string;
   const targetComponentId = args.targetComponentId as string | undefined;
   const targetComponentType = args.targetComponentType as string | undefined;

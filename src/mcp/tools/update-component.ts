@@ -1,4 +1,4 @@
-import { MCPToolResult } from '../../types/index.js';
+import type { CallToolResult } from '@modelcontextprotocol/sdk/types.js';
 import { SessionManager } from '../../session/session-manager.js';
 import { WireframeComponent } from '../../types/index.js';
 import { Logger } from '../../utils/logger.js';
@@ -63,7 +63,7 @@ function updateComponentsRecursive(
 export async function handleUpdateComponent(
   args: Record<string, unknown>,
   _sessionManager: SessionManager
-): Promise<MCPToolResult> {
+): Promise<CallToolResult> {
   const sessionId = args.sessionId as string;
   const targetComponentType = args.targetComponentType as string;
   const updates = args.updates as UpdateComponentArgs['updates'];

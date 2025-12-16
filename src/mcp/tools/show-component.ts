@@ -1,4 +1,5 @@
-import { MCPToolResult, WireframeComponent } from '../../types/index.js';
+import type { CallToolResult } from '@modelcontextprotocol/sdk/types.js';
+import { WireframeComponent } from '../../types/index.js';
 import { SessionManager } from '../../session/session-manager.js';
 import { Logger } from '../../utils/logger.js';
 
@@ -72,7 +73,7 @@ function formatComponentDetails(component: WireframeComponent): string {
 export async function handleShowComponent(
   args: Record<string, unknown>,
   sessionManager: SessionManager
-): Promise<MCPToolResult> {
+): Promise<CallToolResult> {
   const sessionId = args.sessionId as string;
   const componentId = args.componentId as string | undefined;
   const componentType = args.componentType as string | undefined;

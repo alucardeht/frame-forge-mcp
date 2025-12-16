@@ -1,4 +1,5 @@
-import type { MCPTool, MCPToolCall, MCPToolResult } from '../types/index.js';
+import type { CallToolResult } from '@modelcontextprotocol/sdk/types.js';
+import type { MCPTool, MCPToolCall } from '../types/index.js';
 import { MLXEngine } from '../engines/mlx-engine.js';
 import { SessionManager } from '../session/session-manager.js';
 import { Logger } from '../utils/logger.js';
@@ -9,7 +10,7 @@ const logger = new Logger('MCPHandler');
 
 export interface MCPHandler {
   listTools(): MCPTool[];
-  callTool(call: MCPToolCall): Promise<MCPToolResult>;
+  callTool(call: MCPToolCall): Promise<CallToolResult>;
 }
 
 export function createMCPHandler(
@@ -22,7 +23,7 @@ export function createMCPHandler(
       return ALL_TOOLS;
     },
 
-    async callTool(call: MCPToolCall): Promise<MCPToolResult> {
+    async callTool(call: MCPToolCall): Promise<CallToolResult> {
       try {
         const toolName = call.name;
         const args = call.arguments || {};

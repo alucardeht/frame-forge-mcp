@@ -1,13 +1,19 @@
+import { Server } from '@modelcontextprotocol/sdk/server/index.js';
+import { StdioServerTransport } from '@modelcontextprotocol/sdk/server/stdio.js';
+import {
+  ListToolsRequestSchema,
+  CallToolRequestSchema,
+} from '@modelcontextprotocol/sdk/types.js';
 import { MLXEngine, type MLXEngineConfig } from '../engines/mlx-engine.js';
 import { SessionManager } from '../session/session-manager.js';
 import { ConfigManager, type VisualAIConfig } from '../utils/config.js';
 import { Logger, LogLevel } from '../utils/logger.js';
 import { createMCPHandler, type MCPHandler } from './handler.js';
-import type { MCPToolCall } from '../types/index.js';
 
 const globalLogger = new Logger('MCPServer');
 
 export class MCPServer {
+  private server: Server;
   private engine: MLXEngine;
   private sessionManager: SessionManager;
   private handler: MCPHandler;
@@ -43,7 +49,47 @@ export class MCPServer {
     this.sessionManager = new SessionManager(this.config.session.storageDir);
     this.handler = createMCPHandler(this.engine, this.sessionManager);
 
+    this.server = new Server(
+      {
+        name: 'frame-forge-mcp',
+        version: '0.1.0',
+      },
+      {
+        capabilities: {
+          tools: {},
+        },
+      }
+    );
+
+    this.setupHandlers();
     this.logger.info('MCP Server initialized');
+  }
+
+  private setupHandlers(): void {
+    this.server.setRequestHandler(ListToolsRequestSchema, async () => {
+      this.logger.debug('Handling list tools request');
+      return {
+        tools: this.handler.listTools(),
+      };
+    });
+
+    this.server.setRequestHandler(CallToolRequestSchema, async (request) => {
+      try {
+        const { name, arguments: args } = request.params;
+        this.logger.info(`Handling tool call: ${name}`);
+
+        const result = await this.handler.callTool({
+          name,
+          arguments: args || {},
+        });
+
+        return result;
+      } catch (error) {
+        const errorMessage = error instanceof Error ? error.message : String(error);
+        this.logger.error(`Tool call failed: ${errorMessage}`, error);
+        throw error;
+      }
+    });
   }
 
   async start(): Promise<void> {
@@ -54,9 +100,11 @@ export class MCPServer {
       this.logger.info('Session manager initialized');
 
       this.setupProcessHandlers();
-      this.setupStdioHandlers();
 
-      this.logger.info('MCP Server started and listening');
+      const transport = new StdioServerTransport();
+      await this.server.connect(transport);
+
+      this.logger.info('MCP Server connected and listening on stdio');
     } catch (error) {
       this.logger.error('Failed to start MCP Server', error);
       await this.shutdown();
@@ -94,114 +142,6 @@ export class MCPServer {
       await this.shutdown();
       process.exit(1);
     });
-  }
-
-  private setupStdioHandlers(): void {
-    let inputBuffer = '';
-
-    process.stdin.setEncoding('utf-8');
-    process.stdin.on('readable', () => {
-      let chunk: string | null;
-      while ((chunk = process.stdin.read()) !== null) {
-        inputBuffer += chunk;
-
-        const lines = inputBuffer.split('\n');
-        inputBuffer = lines.pop() || '';
-
-        for (const line of lines) {
-          if (line.trim()) {
-            this.processMessage(line).catch((error) => {
-              this.logger.error('Failed to process message', error);
-            });
-          }
-        }
-      }
-    });
-
-    process.stdin.on('end', async () => {
-      this.logger.info('Input stream ended');
-      await this.shutdown();
-      process.exit(0);
-    });
-
-    process.stdin.on('error', async (error) => {
-      this.logger.error('Input stream error', error);
-      await this.shutdown();
-      process.exit(1);
-    });
-  }
-
-  private async processMessage(message: string): Promise<void> {
-    try {
-      const request = JSON.parse(message);
-
-      if (!request.jsonrpc || request.jsonrpc !== '2.0') {
-        this.sendError(request.id, 'Invalid JSON-RPC version');
-        return;
-      }
-
-      if (request.method === 'tools/list') {
-        this.handleListTools(request.id);
-      } else if (request.method === 'tools/call') {
-        await this.handleToolCall(request.id, request.params);
-      } else {
-        this.sendError(request.id, `Unknown method: ${request.method}`);
-      }
-    } catch (error) {
-      this.logger.error('Failed to parse message', error);
-      this.sendError(null, 'Invalid JSON');
-    }
-  }
-
-  private handleListTools(id: string | number | null): void {
-    const tools = this.handler.listTools();
-    this.sendResponse(id, { tools });
-  }
-
-  private async handleToolCall(
-    id: string | number | null,
-    params: Record<string, unknown>
-  ): Promise<void> {
-    try {
-      const toolName = params.name as string;
-      const arguments_ = (params.arguments || {}) as Record<string, unknown>;
-
-      const toolCall: MCPToolCall = {
-        name: toolName,
-        arguments: arguments_,
-      };
-
-      const result = await this.handler.callTool(toolCall);
-      this.sendResponse(id, result);
-    } catch (error) {
-      const errorMessage = error instanceof Error ? error.message : String(error);
-      this.sendError(id, errorMessage);
-    }
-  }
-
-  private sendResponse(id: string | number | null, result: unknown): void {
-    const response = {
-      jsonrpc: '2.0',
-      id,
-      result,
-    };
-    process.stdout.write(JSON.stringify(response) + '\n');
-  }
-
-  private sendError(
-    id: string | number | null,
-    message: string,
-    code: number = -1
-  ): void {
-    const response = {
-      jsonrpc: '2.0',
-      id,
-      error: {
-        code,
-        message,
-      },
-    };
-    process.stdout.write(JSON.stringify(response) + '\n');
   }
 
   async shutdown(): Promise<void> {

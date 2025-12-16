@@ -1,4 +1,5 @@
-import type { MCPTool, MCPToolResult } from '../../types/index.js';
+import type { CallToolResult } from '@modelcontextprotocol/sdk/types.js';
+import type { MCPTool } from '../../types/index.js';
 import type { SessionManager } from '../../session/session-manager.js';
 import { Logger } from '../../utils/logger.js';
 
@@ -30,7 +31,7 @@ export const compareIterationsTool: MCPTool = {
 export async function handleCompareIterations(
   args: Record<string, unknown>,
   sessionManager: SessionManager
-): Promise<MCPToolResult> {
+): Promise<CallToolResult> {
   const sessionId = args.sessionId as string;
   const index1 = args.iterationIndex1 as number;
   const index2 = args.iterationIndex2 as number;
